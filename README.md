@@ -18,6 +18,7 @@ Este proyecto contiene un entorno completo para desarrollar y probar WordPress c
 ```bash
 ./init.sh
 ```
+O ejecutar el comando `make init`
 
 ## 🌐 Acceso
 
@@ -41,3 +42,17 @@ wordpress-docker/
 ├── wordpress-custom/
 │   ├── Dockerfile
 │   └── entrypoint.sh
+
+## ⚙️ Configuración
+
+- `make build` Construye las imágenes Docker.
+- `make up` Inicia los contenedores en segundo plano.
+- `make down` Detiene los contenedores.
+- `make ps` Lista el estado de los contenedores.
+- `make clean` Detiene y elimina contenedores y volúmenes.
+- `make init` Construye e inicia los contenedores ( igual que `init.sh`)
+- `make logs` Muestra los logs de los contenedores.
+- `make db-up` Inicia solo el contenedor de la base de datos.
+- `make db-down` Detiene solo el contenedor de la base de datos.
+- `make db-restart` Reinicia solo el contenedor de la base de datos.
+- `make help` Muestra esta ayuda.

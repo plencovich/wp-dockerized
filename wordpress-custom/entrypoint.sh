@@ -35,6 +35,13 @@ if ! wp core is-installed --allow-root; then
     --allow-root
 fi
 
+# Mover plugin InstanciaInfo al volumen compartido si no existe
+if [ ! -d /var/www/html/wp-content/plugins/instancia-info ]; then
+  echo "Moviendo plugin instancia-info al volumen compartido..."
+  mv /tmp/plugins/instancia-info /var/www/html/wp-content/plugins
+  wp plugin activate instancia-info --allow-root
+fi
+
 echo "Corrigiendo permisos en /var/www/html..."
 chown -R www-data:www-data /var/www/html
 chmod -R 755 /var/www/html

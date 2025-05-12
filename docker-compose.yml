@@ -15,7 +15,14 @@ services:
       - wp_net
 
   app1:
-    build: ./wordpress-custom
+    build:
+      dockerfile: Dockerfile
+      context: ./wordpress-custom
+      args:
+        # Pasar las variables de entorno del proxy al build
+        HTTP_PROXY: ${HTTP_PROXY}
+        HTTPS_PROXY: ${HTTPS_PROXY}
+        NO_PROXY: ${NO_PROXY}
     environment:
       WORDPRESS_DB_HOST: ${WORDPRESS_DB_HOST}
       WORDPRESS_DB_NAME: ${WORDPRESS_DB_NAME}
@@ -26,6 +33,7 @@ services:
       WP_ADMIN_EMAIL: ${WP_ADMIN_EMAIL}
       WP_SITE_TITLE: ${WP_SITE_TITLE}
       WP_SITE_URL: ${WP_SITE_URL}
+      INSTANCE_ID: app1
     volumes:
       - wp_data:/var/www/html
     depends_on:
@@ -34,7 +42,14 @@ services:
       - wp_net
 
   app2:
-    build: ./wordpress-custom
+    build:
+      dockerfile: Dockerfile
+      context: ./wordpress-custom
+      args:
+        # Pasar las variables de entorno del proxy al build
+        HTTP_PROXY: ${HTTP_PROXY}
+        HTTPS_PROXY: ${HTTPS_PROXY}
+        NO_PROXY: ${NO_PROXY}
     environment:
       WORDPRESS_DB_HOST: ${WORDPRESS_DB_HOST}
       WORDPRESS_DB_NAME: ${WORDPRESS_DB_NAME}
@@ -45,6 +60,7 @@ services:
       WP_ADMIN_EMAIL: ${WP_ADMIN_EMAIL}
       WP_SITE_TITLE: ${WP_SITE_TITLE}
       WP_SITE_URL: ${WP_SITE_URL}
+      INSTANCE_ID: app2
     volumes:
       - wp_data:/var/www/html
     depends_on:
@@ -59,8 +75,10 @@ services:
       MYSQL_USER: ${WORDPRESS_DB_USER}
       MYSQL_PASSWORD: ${WORDPRESS_DB_PASSWORD}
       MYSQL_ROOT_PASSWORD: ${MYSQL_ROOT_PASSWORD}
+    ports:
+      - "3306:3306"
     volumes:
-      - db_data:/var/lib/mysql
+      - ./mysql-data:/var/lib/mysql
     networks:
       - wp_net
 
@@ -92,14 +110,13 @@ services:
       - "9000:9000"
       - "9001:9001"
     volumes:
-      - minio_data:/data
+      - ./minio_data:/data
     networks:
       - wp_net
 
 networks:
   wp_net:
 
+
 volumes:
   wp_data:
-  db_data:
-  minio_data:
